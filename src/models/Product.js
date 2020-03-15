@@ -9,14 +9,32 @@ module.exports = sequelize.define('Product', {
   },
   name: {
     type: Sequelize.STRING,
-    allowNull: false
+    allowNull: false,
+    validate: {
+      len: {
+        args: [1, 100],
+        msg: 'Name of Product Cannot be empty!'
+      }
+    }
   },
   description: {
     type: Sequelize.TEXT,
-    allowNull: false
+    allowNull: false,
+    validate: {
+      len: {
+        args: [1, 100],
+        msg: 'Description Cannot be empty!'
+      }
+    }
   },
   price: {
-    type: Sequelize.STRING,
-    allowNull: false
+    type: Sequelize.INTEGER,
+    allowNull: false,
+    validate: {
+      min: {
+        args: 1,
+        msg: 'Price Can not be 0!'
+      }
+    }
   }
 });
