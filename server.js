@@ -11,6 +11,9 @@ app.get('/', (req, res) => {
 // DB Connection
 require('./src/database/connection');
 
+// bootstrap
+require('./src/bootstrap')();
+
 app.listen({ port: 3000 }, (err, res) => {
   err 
   ?
