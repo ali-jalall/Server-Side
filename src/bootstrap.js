@@ -9,6 +9,4 @@ module.exports = async () => {
   }).catch(err => err)
 
   console.log(user);
-
-
 }

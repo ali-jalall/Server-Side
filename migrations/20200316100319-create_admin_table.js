@@ -1,0 +1,52 @@
+'use strict';
+
+module.exports = {
+  up: (queryInterface, Sequelize) => {
+    return queryInterface.createTable('admins', {
+      id: {
+        type: Sequelize.INTEGER(11),
+        allowNull: false,
+        autoIncrement: true,
+        primaryKey: true
+      },
+      username: {
+        type: Sequelize.STRING(8),
+        allowNull: false,
+        unique: true,
+        validate: {
+          len: {
+            args: [6, 18],
+            msg: 'Username Must be more than 6 letters!'
+          }
+        }
+      },
+      email: {
+        type: Sequelize.STRING,
+        allowNull: false,
+        unique: true,
+        validate: {
+          isEmail: {
+            args: true,
+            msg: 'Please Enter Valid email!'
+          }
+        }
+      },
+      password: {
+        type: Sequelize.STRING(8),
+        allowNull: false,
+        validate: {
+          len: {
+            args: [8, 16],
+            msg: 'Password Must be More than 8 letters!'
+          }
+        }
+      },
+      createdAt: Sequelize.DATE,
+      updatedAt: Sequelize.DATE,
+    });
+  },
+
+  down: (queryInterface, Sequelize) => {
+    return queryInterface.dropTable('admins');
+  }
+};
