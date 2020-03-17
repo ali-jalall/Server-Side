@@ -1,8 +1,10 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const app = express();
+const userRouter = require('./src/routes/user');
 
-app.use(bodyParser.json());
+app.use(express.json());
+app.use('/users', userRouter)
 
 app.get('/', (req, res) => {
   res.send('<h1>Development ....</h1>')
@@ -12,7 +14,14 @@ app.get('/', (req, res) => {
 require('./src/database/connection');
 
 // const  findUserByIdAndUpdate  = require('./src/models/User');
+// const addProduct = require('./src/controllers/productController');
 
+// console.log(addProduct.addProduct({
+//   name: 'Hair Drier',
+//   description: 'this is my first product',
+//   category: 'Home',
+//   price: 120
+// }));
 // findUserByIdAndUpdate(3, {productsId: '636274524'})
 //   .then(res => console.log(res))
 //   .catch(err => console.log(err))
