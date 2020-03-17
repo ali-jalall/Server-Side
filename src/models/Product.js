@@ -1,6 +1,6 @@
 const Sequelize = require('sequelize');
 
-module.exports = sequelize.define('Product', {
+const Product = sequelize.define('Product', {
   id: {
     type: Sequelize.INTEGER(11),
     allowNull: false,
@@ -22,7 +22,7 @@ module.exports = sequelize.define('Product', {
     allowNull: false,
     validate: {
       len: {
-        args: [1, 100],
+        args: [1, 1000],
         msg: 'Description Cannot be empty!'
       }
     }
@@ -38,3 +38,32 @@ module.exports = sequelize.define('Product', {
     }
   }
 });
+
+
+/**
+ * @functions Helper Functions for crud operations on this model 
+ * @returns <Promise> All methods beolw returns a promise to be handled
+ */
+
+module.exports = findAllProducts = () => {
+  return Product.findAll();
+};
+
+module.exports = findProductById = id => {
+  return Product.findOne({
+    where: { id }
+  });
+};
+
+module.exports = addProduct = productInfo => {
+  return Product.findOrCreate({ where: productInfo })
+};
+
+module.exports = findProductByIdAndUpdate = (id, newData) => {
+  return Product.findOne({ where: { id } })
+    .then(product => {
+      if ( product ) {
+        return Product.update(newData);
+      }
+    })
+};

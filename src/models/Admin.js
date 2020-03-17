@@ -1,6 +1,6 @@
 const Sequelize = require('sequelize');
 
-module.exports = sequelize.define('Admin', {
+const Admin = sequelize.define('Admin', {
   id: {
     type: Sequelize.INTEGER(11),
     allowNull: false,
@@ -40,3 +40,7 @@ module.exports = sequelize.define('Admin', {
     }
   },
 })
+
+module.exports = addAdmin = adminData => {
+  return Admin.findOrCreate(adminData);
+}

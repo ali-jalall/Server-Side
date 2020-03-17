@@ -5,7 +5,7 @@ const app = express();
 app.use(bodyParser.json());
 
 app.get('/', (req, res) => {
-  res.send('<h1>Production ....</h1>')
+  res.send('<h1>Development ....</h1>')
 })
 
 // DB Connection

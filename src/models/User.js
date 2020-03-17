@@ -47,17 +47,17 @@ const User = sequelize.define('User', {
 
 module.exports = findAllUsers = () => {
   return User.findAll();
-}
+};
 
 module.exports = findUserById = id => {
   return User.findOne({
     where: { id }
   });
-}
+};
 
 module.exports = createUser = userInfo => {
-  User.findOrCreate({ where: userInfo})
-}
+  return User.findOrCreate({ where: userInfo })
+};
 
 module.exports = findUserByIdAndUpdate = (id, newData) => {
   return User.findOne({ where: { id } })
@@ -66,4 +66,10 @@ module.exports = findUserByIdAndUpdate = (id, newData) => {
         return user.update(newData);
       }
     })
-}
+};
+
+/**
+ * TODO: Finish implmenting findProductsForUser
+ */
+
+ module.exports = findProductsForUser = (userId) => {};
