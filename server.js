@@ -11,6 +11,12 @@ app.get('/', (req, res) => {
 // DB Connection
 require('./src/database/connection');
 
+// const  findUserByIdAndUpdate  = require('./src/models/User');
+
+// findUserByIdAndUpdate(3, {productsId: '636274524'})
+//   .then(res => console.log(res))
+//   .catch(err => console.log(err))
+
 // bootstrap
 // require('./src/bootstrap')();
 
