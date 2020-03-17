@@ -1,6 +1,7 @@
 const Sequelize = require('sequelize');
+const sequelize = require('../database/connection')
 
-const Product = sequelize.define('Product', {
+module.exports = sequelize.define('Product', {
   id: {
     type: Sequelize.INTEGER(11),
     allowNull: false,
@@ -27,6 +28,10 @@ const Product = sequelize.define('Product', {
       }
     }
   },
+  category: {
+    type: Sequelize.STRING,
+    allowNull: false,
+  },
   price: {
     type: Sequelize.INTEGER,
     allowNull: false,
@@ -38,32 +43,3 @@ const Product = sequelize.define('Product', {
     }
   }
 });
-
-
-/**
- * @functions Helper Functions for crud operations on this model 
- * @returns <Promise> All methods beolw returns a promise to be handled
- */
-
-module.exports = findAllProducts = () => {
-  return Product.findAll();
-};
-
-module.exports = findProductById = id => {
-  return Product.findOne({
-    where: { id }
-  });
-};
-
-module.exports = addProduct = productInfo => {
-  return Product.findOrCreate({ where: productInfo })
-};
-
-module.exports = findProductByIdAndUpdate = (id, newData) => {
-  return Product.findOne({ where: { id } })
-    .then(product => {
-      if ( product ) {
-        return Product.update(newData);
-      }
-    })
-};

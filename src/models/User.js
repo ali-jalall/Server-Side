@@ -1,7 +1,7 @@
 const Sequelize = require('sequelize');
 const sequelize = require('../database/connection')
 
-const User = sequelize.define('User', {
+module.exports = sequelize.define('User', {
   id: {
     type: Sequelize.INTEGER(11),
     allowNull: false,
@@ -39,37 +39,3 @@ const User = sequelize.define('User', {
     }
   }
 });
-
-/**
- * @functions Helper Functions for crud operations on this model 
- * @returns <Promise> All methods beolw returns a promise to be handled
- */
-
-module.exports = findAllUsers = () => {
-  return User.findAll();
-};
-
-module.exports = findUserById = id => {
-  return User.findOne({
-    where: { id }
-  });
-};
-
-module.exports = createUser = userInfo => {
-  return User.findOrCreate({ where: userInfo })
-};
-
-module.exports = findUserByIdAndUpdate = (id, newData) => {
-  return User.findOne({ where: { id } })
-    .then(user => {
-      if ( user ) {
-        return user.update(newData);
-      }
-    })
-};
-
-/**
- * TODO: Finish implmenting findProductsForUser
- */
-
- module.exports = findProductsForUser = (userId) => {};
