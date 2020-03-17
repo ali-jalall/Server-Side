@@ -29,6 +29,10 @@ module.exports = {
           }
         }
       },
+      category: {
+        type: Sequelize.STRING,
+        allowNull: false,
+      },
       price: {
         type: Sequelize.INTEGER,
         allowNull: false,
