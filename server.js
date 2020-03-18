@@ -2,9 +2,11 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const app = express();
 const userRouter = require('./src/routes/user');
+const productRouter = require('./src/routes/product');
 
 app.use(express.json());
 app.use('/users', userRouter)
+app.use('/products', productRouter)
 
 app.get('/', (req, res) => {
   res.send('<h1>Development ....</h1>')

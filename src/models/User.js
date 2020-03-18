@@ -29,13 +29,13 @@ module.exports = sequelize.define('User', {
       }
     }
   },
-  productsId: {
-    type: Sequelize.STRING,
-    get () {
-      return this.getDataValue('productsId').split(';');
-    },
-    set (val) {
-      this.setDataValue('productsId', val.join(';'));
-    }
-  }
+  // productsId: {
+  //   type: Sequelize.STRING,
+  //   get () {
+  //     return this.getDataValue('productsId').split(';');
+  //   },
+  //   set (val) {
+  //     this.setDataValue('productsId', val.join(';'));
+  //   }
+  // }
 });

@@ -20,39 +20,45 @@ exports.findAllUsers = (req, res) => {
 };
 
 exports.findUserById = (req, res) => {
-  User.findOne({ where: { id: req.params.id } })
+  const id = req.params.id;
+  User.findOne({ where: { id } })
     .then(user => {
-      if (user) {
+      if ( user ) {
         res.status(200).json({ user })
       } else {
         throw new Error('Couldn\'t find results');
       }
     })
     .catch(err => {
-      res.status(204).json({ err });
+      res.json({ err: err });
     })
 };
 
 exports.createUser = (req, res) => {
-  console.log(req.body)
-    User.findOrCreate({ where: {
-      username: req.body.username,
-      password: req.body.password,
-    }})
-      .then((user, created) => {
-        console.log(user)
-        res.json({ user })
-        // if ( created ) {
-        //   res.status(201).json({
-        //     msg: 'User added successfuly!',
-        //     user
-        //   });
-        // } else {
-        //   throw new Error('User already exist!')
-        // }
-      }, (error) => {
-        res.json(error);
+  User.findOne({
+    where: {
+      username: req.body.username
+    }
+  })
+  .then(data => {
+    if ( data ) {
+      res.status(200).json({
+        msg: 'User already exist',
+        data
       })
+    } else {
+      return User.create(req.body)
+    }
+  })
+  .then(createdUser => {
+    res.status(201).json({
+      msg: 'User Created!',
+      createdUser
+    })
+  })
+  .catch(err => {
+    res.json({ err })
+  })
 };
 
 exports.findUserByIdAndUpdate = (req, res) => {
@@ -75,8 +81,5 @@ exports.findUserByIdAndUpdate = (req, res) => {
     })
 };
 
-/**
- * TODO: Finish implmenting findProductsForUser
- */
 
 exports.findProductsForUser = (userId) => {};

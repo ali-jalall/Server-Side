@@ -34,7 +34,7 @@ exports.findProductById = (req, res) => {
 };
 
 exports.addProduct = (req, res) => {
-  Product.create(req.body.productInfo)
+  Product.create(req.body)
     .then(product => {
       if ( product ) {
         res.status(201).json({ 
