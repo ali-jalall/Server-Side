@@ -15,7 +15,7 @@ exports.findAllUsers = (req, res) => {
       }
     })
     .catch(err => {
-      res.status(204).json({ err });
+      res.status(204).json({ errMsg: err.message });
     })
 };
 
@@ -30,7 +30,7 @@ exports.findUserById = (req, res) => {
       }
     })
     .catch(err => {
-      res.json({ err: err });
+      res.json({ errMsg: err.message });
     })
 };
 
@@ -77,7 +77,7 @@ exports.findUserByIdAndUpdate = (req, res) => {
       });
     })
     .catch(err => {
-      res.json({ err });
+      res.json({ errMsg: err.message });
     })
 };
 
