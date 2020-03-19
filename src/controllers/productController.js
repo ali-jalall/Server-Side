@@ -22,14 +22,14 @@ exports.findAllProducts = (req, res) => {
 exports.findProductById = (req, res) => {
   Product.findOne({ where: { id: req.params.id } })
     .then(product => {
-      if (product) {
+      if ( product ) {
         res.status(200).json({ product })
       } else {
         throw new Error('Couldn\'t find results');
       }
     })
     .catch(err => {
-      res.status(204).json({ err });
+      res.json({ errMsg: err.message });
     })
 };
 
@@ -44,17 +44,23 @@ exports.addProduct = (req, res) => {
       }
     })
     .catch(err => {
-      res.status(204).json({ err });
+      res.json({ errMsg: err });
     })
 };
 
 exports.findProductByIdAndUpdate = (req, res) => {
-  Product.findOne({ where: { id: req.body.id } })
+  const id = req.body.id;
+  const newData = req.body.newData;
+  Product.findOne({ where: { id } })
     .then(product => {
       if ( product ) {
-        return Product.update(req.body.newData)
+        if ( newData ) {
+          product.update(req.body.newData)
+        } else {
+          throw new Error('No Content Provided');
+        }
       } else {
-        throw new Error('Error while Updating ...')
+        throw new Error('No product With this id');
       }
     })
     .then(updatedProduct => {
@@ -64,20 +70,22 @@ exports.findProductByIdAndUpdate = (req, res) => {
       });
     })
     .catch(err => {
-      res.json({ err });
+      res.status(404).json({ errMsg: err.message });
     })
 };
 
 exports.findProductsByCategory = (req, res) => {
-  Product.findAll({ where: { category: req.body.category }})
+  Product.findAll({ where: { category: req.params.category }})
     .then(products => {
-      if ( products ) {
+      if ( products.length !== 0 ) {
         res.json({ products })
       } else {
         throw new Error('No Products for this category!');
       }
     })
     .catch(err => {
-      res.json({ err })
+      res.status(404).json({ errMsg: err.message })
     })
 };
+
+// Done
