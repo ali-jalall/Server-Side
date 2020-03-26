@@ -1,10 +1,12 @@
 const express = require('express');
 const app = express();
+const cors = require('cors');
 const userRouter = require('./src/routes/user');
 const productRouter = require('./src/routes/product');
 const adminRouter = require('./src/routes/admin');
 
 app.use(express.json());
+app.use(cors());
 app.use('/users', userRouter)
 app.use('/products', productRouter)
 app.use('/admins', adminRouter)
