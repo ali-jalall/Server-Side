@@ -30,7 +30,8 @@ exports.findUserById = (req, res) => {
       }
     })
     .catch(err => {
-      res.json({ errMsg: err.message });
+      console.log(err);
+      res.json({ errMsg: err });
     })
 };
 
@@ -57,7 +58,7 @@ exports.createUser = (req, res) => {
     })
   })
   .catch(err => {
-    res.json({ err })
+    res.json({ errMsg: err.message })
   })
 };
 
