@@ -41,5 +41,9 @@ module.exports = sequelize.define('Product', {
         msg: 'Price Can not be 0!'
       }
     }
+  },
+  product_img: {
+    type: Sequelize.STRING,
+    allowNull: false
   }
 });

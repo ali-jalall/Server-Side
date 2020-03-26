@@ -43,6 +43,10 @@ module.exports = {
           }
         }
       },
+      product_img: {
+        type: Sequelize.STRING,
+        allowNull: false
+      },
       createdAt: Sequelize.DATE,
       updatedAt: Sequelize.DATE
     });

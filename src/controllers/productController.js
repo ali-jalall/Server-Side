@@ -29,7 +29,7 @@ exports.findProductById = (req, res) => {
       }
     })
     .catch(err => {
-      res.json({ errMsg: err.message });
+      res.status(204).json({ errMsg: err.message });
     })
 };
 
@@ -44,9 +44,20 @@ exports.addProduct = (req, res) => {
       }
     })
     .catch(err => {
-      res.json({ errMsg: err });
+      res.json({ errMsg: err.message });
     })
 };
+
+// exports.deleteProductById = (req, res) => {
+//   Product.findOne({
+//     where: {
+//       id: req.params.id
+//     }
+//   })
+//   .then(product => {
+//     product.delete
+//   })
+// }
 
 exports.findProductByIdAndUpdate = (req, res) => {
   const id = req.body.id;
