@@ -20,12 +20,12 @@ module.exports = sequelize.define('User', {
     }
   },
   password: {
-    type: Sequelize.STRING(8),
+    type: Sequelize.TEXT,
     allowNull: false,
     validate: {
-      len: {
-        args: [8, 16],
-        msg: 'Password Must be More than 8 letters!'
+      min:{
+        args:[4],
+        msg:" Minimum 4 characters required in last name"
       }
     }
   },

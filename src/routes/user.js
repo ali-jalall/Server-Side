@@ -9,6 +9,9 @@ router.route('/')
 router.route('/add')
   .post(user_controller.createUser)
 
+router.route('/login')
+  .post(user_controller.login)
+
 router.route('/:id')
   .get(user_controller.findUserById)
   .patch(user_controller.findUserByIdAndUpdate)
