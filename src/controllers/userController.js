@@ -54,6 +54,7 @@ exports.createUser = (req, res) => {
       })
     } else {
       if ( password.length < 8 ) throw new Error('Password Must be more than 8 letters')
+      if ( username.length <= 6 ) throw new Error('Username Must be more than 6 letters')
       password = bcrypt.hashSync(password, 8)
       return User.create({ username, password })
     }
@@ -61,6 +62,7 @@ exports.createUser = (req, res) => {
   .then(createdUser => {
     const token = jwt.sign({ id: createdUser.id }, config.secret, { expiresIn: 86400 });
     res.status(201).json({
+      auth: true,
       msg: 'User Created!',
       createdUser,
       token
@@ -71,6 +73,10 @@ exports.createUser = (req, res) => {
   })
 };
 
+// exports.temp = (req, res) => {
+//   let token = jwt.verify(req.body.token, config.secret)
+// }
+
 exports.login = (req, res) => {
   User.findOne({
     where: {
@@ -79,10 +85,10 @@ exports.login = (req, res) => {
   })
   .then(user => {
     if ( !user ) {
-      throw new Error('User Not Registred');
+      throw new Error('Please Enter Valid Data');
     }
     let isPasswordValid = bcrypt.compareSync(req.body.password, user.password);
-    if ( !isPasswordValid ) return res.status(401).json({ auth: false, token: null })
+    if ( !isPasswordValid ) return res.status(401).send({ auth: false, token: null })
     let token = jwt.sign({ id: user.id }, config.secret, { expiresIn: 86400 });
     res.status(200).json({ auth: true, token, user })
   })

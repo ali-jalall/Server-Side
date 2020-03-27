@@ -13,8 +13,8 @@ module.exports = sequelize.define('User', {
     allowNull: false,
     unique: true,
     validate: {
-      len: {
-        args: [6, 18],
+      min: {
+        args: [6],
         msg: 'Username Must be more than 6 letters!'
       }
     }
@@ -24,8 +24,8 @@ module.exports = sequelize.define('User', {
     allowNull: false,
     validate: {
       min:{
-        args:[4],
-        msg:" Minimum 4 characters required in last name"
+        args: 8,
+        msg: "Password must be more than 8 letters"
       }
     }
   },
