@@ -64,7 +64,7 @@ exports.createUser = (req, res) => {
     res.status(201).json({
       auth: true,
       msg: 'User Created!',
-      createdUser,
+      username: createdUser.username,
       token
     })
   })
@@ -88,9 +88,9 @@ exports.login = (req, res) => {
       throw new Error('Please Enter Valid Data');
     }
     let isPasswordValid = bcrypt.compareSync(req.body.password, user.password);
-    if ( !isPasswordValid ) return res.status(401).send({ auth: false, token: null })
+    if ( !isPasswordValid ) return res.status(401).send({ auth: false, token: null });
     let token = jwt.sign({ id: user.id }, config.secret, { expiresIn: 86400 });
-    res.status(200).json({ auth: true, token, user })
+    res.status(200).json({ auth: true, token, username: user.username });
   })
   .catch(err => {
     res.json({ err: err.message })
