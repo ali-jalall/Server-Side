@@ -29,7 +29,7 @@ app.get("*", (req, res) => {
 
 mongoose.Promise = global.Promise;
 // Mongodb connection//
-mongoose.connect(process.env.MONGODB_URI || "",
+mongoose.connect(process.env.MONGODB_URI || "mongodb+srv://alijalal:25102000@cluster0-shszn.mongodb.net/test?retryWrites=true&w=majority",
   {
     useCreateIndex: true,
     useNewUrlParser: true,
