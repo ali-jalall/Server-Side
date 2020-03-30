@@ -5,6 +5,11 @@ const userRouter = require("./src/routes/user");
 const productRouter = require("./src/routes/product");
 const adminRouter = require("./src/routes/admin");
 const mongoose = require("mongoose");
+const port = process.env.PORT || 3000;
+const dotenv = require('dotenv');
+dotenv.config({
+  path: './config.env'
+});
 
 app.use(express.json());
 app.use(cors());
@@ -24,8 +29,7 @@ app.get("/", (req, res) => {
 
 mongoose.Promise = global.Promise;
 // Mongodb connection//
-mongoose.connect(
-  "mongodb+srv://alijalal:25102000@cluster0-shszn.mongodb.net/test?retryWrites=true&w=majority",
+mongoose.connect(process.env.MONGODB_URI,
   {
     useCreateIndex: true,
     useNewUrlParser: true,
@@ -41,7 +45,7 @@ mongoose.connect(
   }
 );
 
-app.listen(3000, (err, res) => {
+app.listen(port, (err, res) => {
   err
     ? console.log("Error while connecting to sevrer !", err)
     : console.log(`Connected to server on http://localhost:3000`);
