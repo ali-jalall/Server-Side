@@ -2,11 +2,7 @@ const Admin = require('../models/Admin');
 
 exports.addAdmin = (req, res) => {
   const email = req.body.email;
-  Admin.findOne({
-    where: {
-      email
-    }
-  })
+  Admin.findOne({ email })
   .then(admin => {
     if ( admin ) {
       res.status(200).json({
@@ -29,7 +25,7 @@ exports.addAdmin = (req, res) => {
 }
 
 exports.getAdmins = (req, res) => {
-  Admin.findAll()
+  Admin.find()
     .then(admins => {
       if ( admins ) {
         res.json({ admins })

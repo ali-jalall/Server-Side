@@ -1,10 +1,10 @@
-const Sequelize = require('sequelize');
+// const Sequelize = require('sequelize');
 
-const sequelize = new Sequelize('ecommerce', 'alijalal', '0000', {
-  host: '127.0.0.1',
-  dialect: 'mysql',
-  operatorsAliases: false
-})
+// const sequelize = new Sequelize('sql7330157', 'sql7330157', 'unbbZPikqx', {
+//   host: 'sql7.freemysqlhosting.net',
+//   dialect: 'mysql',
+//   operatorsAliases: false
+// })
 
-module.exports = sequelize;
-global.sequelize = sequelize;
+// module.exports = sequelize;
+// global.sequelize = sequelize;

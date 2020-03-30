@@ -9,7 +9,7 @@ const config = require('../../config');
  */
 
 exports.findAllUsers = (req, res) => {
-  User.findAll()
+  User.find()
     .then(result => {
       if ( result ) {
         res.status(200).json({ result });
@@ -24,7 +24,7 @@ exports.findAllUsers = (req, res) => {
 
 exports.findUserById = (req, res) => {
   const id = req.params.id;
-  User.findOne({ where: { id } })
+  User.findOne({ _id: id })
     .then(user => {
       if ( user ) {
         res.status(200).json({ user })
@@ -41,11 +41,7 @@ exports.findUserById = (req, res) => {
 exports.createUser = (req, res) => {
   let username = req.body.username;
   let password = req.body.password;
-  User.findOne({
-    where: {
-      username
-    }
-  })
+  User.findOne({ username })
   .then(data => {
     if ( data ) {
       res.status(200).json({
@@ -78,11 +74,7 @@ exports.createUser = (req, res) => {
 // }
 
 exports.login = (req, res) => {
-  User.findOne({
-    where: {
-      username: req.body.username
-    }
-  })
+  User.findOne({ username: req.body.username })
   .then(user => {
     if ( !user ) {
       throw new Error('Please Enter Valid Data');

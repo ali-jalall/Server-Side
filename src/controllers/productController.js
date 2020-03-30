@@ -6,7 +6,7 @@ const Product = require('../models/Product');
  */
 
 exports.findAllProducts = (req, res) => {
-  Product.findAll()
+  Product.find()
     .then(result => {
       if ( result ) {
         res.status(200).json({ result });
@@ -20,7 +20,7 @@ exports.findAllProducts = (req, res) => {
 };
 
 exports.findProductById = (req, res) => {
-  Product.findOne({ where: { id: req.params.id } })
+  Product.findOne({ _id: req.params.id })
     .then(product => {
       if ( product ) {
         res.status(200).json({ product })
@@ -62,7 +62,7 @@ exports.addProduct = (req, res) => {
 exports.findProductByIdAndUpdate = (req, res) => {
   const id = req.body.id;
   const newData = req.body.newData;
-  Product.findOne({ where: { id } })
+  Product.findOne({ _id: id })
     .then(product => {
       if ( product ) {
         if ( newData ) {
@@ -86,7 +86,7 @@ exports.findProductByIdAndUpdate = (req, res) => {
 };
 
 exports.findProductsByCategory = (req, res) => {
-  Product.findAll({ where: { category: req.params.category }})
+  Product.find({ category: req.params.category })
     .then(products => {
       if ( products.length !== 0 ) {
         res.json({ products })
