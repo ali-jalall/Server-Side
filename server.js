@@ -5,7 +5,7 @@ const userRouter = require("./src/routes/user");
 const productRouter = require("./src/routes/product");
 const adminRouter = require("./src/routes/admin");
 const mongoose = require("mongoose");
-const port = process.env.PORT || 3000;
+// const port = process.env.PORT || 3000;
 const dotenv = require('dotenv');
 dotenv.config({
   path: './config.env'
@@ -45,7 +45,7 @@ mongoose.connect(process.env.MONGODB_URI,
   }
 );
 
-app.listen(port, (err, res) => {
+app.listen((process.env.PORT || 3000), (err, res) => {
   err
     ? console.log("Error while connecting to sevrer !", err)
     : console.log(`Connected to server on http://localhost:3000`);
