@@ -17,7 +17,7 @@ app.use("/users", userRouter);
 app.use("/products", productRouter);
 app.use("/admins", adminRouter);
 
-app.get("*", (req, res) => {
+app.get("/todo", (req, res) => {
   res.send("<h1>Development ....</h1>");
 });
 
