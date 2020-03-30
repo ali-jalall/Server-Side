@@ -29,7 +29,7 @@ app.get("*", (req, res) => {
 
 mongoose.Promise = global.Promise;
 // Mongodb connection//
-mongoose.connect(process.env.MONGODB_URI,
+mongoose.connect(process.env.MONGODB_URI || "",
   {
     useCreateIndex: true,
     useNewUrlParser: true,
