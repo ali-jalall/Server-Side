@@ -82,7 +82,6 @@ exports.login = (req, res) => {
     let isPasswordValid = bcrypt.compareSync(req.body.password, user.password);
     if ( !isPasswordValid ) {
       return res.json({ auth: false, token: null });
-      res.status(401).end()
     }
     let token = jwt.sign({ id: user.id }, config.secret, { expiresIn: 86400 });
     res.status(200).json({ auth: true, token, username: user.username });
