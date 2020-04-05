@@ -10,9 +10,9 @@ const config = require('../../config');
 
 exports.findAllUsers = (req, res) => {
   User.find()
-    .then(result => {
-      if ( result ) {
-        res.status(200).json({ result });
+    .then(users => {
+      if ( users ) {
+        res.status(200).json({ users });
       } else {
         throw new Error('Couldn\'t find results');
       }
@@ -33,7 +33,6 @@ exports.findUserById = (req, res) => {
       }
     })
     .catch(err => {
-      console.log(err);
       res.json({ errMsg: err });
     })
 };
@@ -70,12 +69,8 @@ exports.createUser = (req, res) => {
   })
 };
 
-// exports.temp = (req, res) => {
-//   let token = jwt.verify(req.body.token, config.secret)
-// }
-
 exports.login = (req, res) => {
-  User.findOne({ username: req.body.username })
+  User.findOne({ email: req.body.email })
     .then(user => {
       if ( !user ) {
         throw new Error('Please Enter Valid Data');
@@ -94,24 +89,25 @@ exports.login = (req, res) => {
 }
 
 exports.findUserByIdAndUpdate = (req, res) => {
-  User.findOne({ where: { id: req.body.id } })
-    .then(user => {
-      if ( user ) {
-        return user.update(req.body.newData);
-      } else {
-        throw new Error('Couldn\'t find results');
-      }
-    })
-    .then(updatedUser => {
-      res.status(201).json({
-        msg: 'User Updated Successfuly!',
-        updatedUser
-      });
+  User.findByIdAndUpdate(req.params.id, req.body)
+    .then(userupdated => {
+      res.status(201).json({ userupdated });
     })
     .catch(err => {
-      res.json({ errMsg: err.message });
+      res.json({ err: err.message})
     })
 };
+
+exports.findUserByIdAndDelete = (req, res) => {
+  User.findByIdAndDelete(req.params.id)
+    .then(user => {
+      if ( !user ) throw new Error('No User With this id!')
+      res.status(201).json({ deleted: true })
+    })
+    .catch(err => {
+      res.json({ errMsg: err.message })
+    })
+}
 
 
 exports.findProductsForUser = (userId) => {};

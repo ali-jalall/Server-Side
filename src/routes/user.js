@@ -18,5 +18,6 @@ router.route('/login')
 router.route('/:id')
   .get(user_controller.findUserById)
   .patch(user_controller.findUserByIdAndUpdate)
+  .put(user_controller.findUserByIdAndDelete)
 
 module.exports = router;
