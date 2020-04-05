@@ -33,7 +33,7 @@ exports.findUserById = (req, res) => {
       }
     })
     .catch(err => {
-      res.json({ errMsg: err });
+      res.json({ errMsg: err.message });
     })
 };
 
