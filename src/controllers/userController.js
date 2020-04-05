@@ -75,21 +75,21 @@ exports.createUser = (req, res) => {
 
 exports.login = (req, res) => {
   User.findOne({ username: req.body.username })
-  .then(user => {
-    if ( !user ) {
-      throw new Error('Please Enter Valid Data');
-    }
-    let isPasswordValid = bcrypt.compareSync(req.body.password, user.password);
-    if ( !isPasswordValid ) {
-      return res.json({ auth: false, token: null });
-    }
-    let token = jwt.sign({ id: user.id }, config.secret, { expiresIn: 86400 });
-    res.status(200).json({ auth: true, token, username: user.username });
-    res.end()
-  })
-  .catch(err => {
-    res.json({ err: err.message })
-  })
+    .then(user => {
+      if ( !user ) {
+        throw new Error('Please Enter Valid Data');
+      }
+      let isPasswordValid = bcrypt.compareSync(req.body.password, user.password);
+      if ( !isPasswordValid ) {
+        return res.json({ auth: false, token: null });
+      }
+      let token = jwt.sign({ id: user.id }, config.secret, { expiresIn: 86400 });
+      res.status(200).json({ auth: true, token, username: user.username });
+      res.end()
+    })
+    .catch(err => {
+      res.json({ err: err.message })
+    })
 }
 
 exports.findUserByIdAndUpdate = (req, res) => {

@@ -5,9 +5,26 @@ const userSchema = mongoose.Schema({
     required: [true, "Username is Required"],
     trim: true
   },
+  email: {
+    type: String,
+    required: [true, "Email is Required"],
+    unique: true,
+  },
   password: {
     type: String,
     required: [true, "Password is Required"]
+  },
+  phone_number: {
+    type: String,
+    default: 'N/A'
+  },
+  address: {
+    type: String,
+    default: 'N/A'
+  },
+  city: {
+    type: String,
+    default: 'N/A'
   }
 });
 
