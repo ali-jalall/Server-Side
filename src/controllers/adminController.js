@@ -59,7 +59,7 @@ exports.adminLogin = (req, res) => {
     })
 }
 
-exports.getAdmins = (req, res) => {
+exports.findAllAdmins = (req, res) => {
   Admin.find()
     .then(admins => {
       if ( admins ) {

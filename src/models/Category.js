@@ -4,9 +4,13 @@ const categorySchema = mongoose.Schema({
     type: String,
     required: [true, "Category Name is Required"],
   },
-  products: {
-    type: [Product]
-  },
+  products:
+  [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Product'
+    }
+  ],
   createdAt: {
     type: Date,
     default: Date.now(),
