@@ -11,11 +11,10 @@ const productSchema = mongoose.Schema({
   },
   details: {
     type: String,
-    required: [true, "Password is Required"],
+    required: [true, "Details is Required"],
   },
   category: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Category",
+    type: String,
     required: [true, "Category is Required"],
   },
   price: {

@@ -8,12 +8,11 @@ router.route('/')
 
 router.route('/add')
   .post(product_controller.addProduct)
-  
-router.route('/edit')
-  .patch(product_controller.findProductByIdAndUpdate)
 
 router.route('/p/:id')
   .get(product_controller.findProductById)
+  .put(product_controller.findProductByIdAndUpdate)
+  .delete(product_controller.findProductByIdAndDelete)
 
 router.route('/:category')
   .get(product_controller.findProductsByCategory)
