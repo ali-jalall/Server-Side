@@ -7,7 +7,7 @@ router.route('/')
   .get(user_controller.findAllUsers)
 
 router.route('/add')
-  .post(user_controller.createUser)
+  .post(user_controller.addUser)
 
 router.route('/login')
   .post(user_controller.login)

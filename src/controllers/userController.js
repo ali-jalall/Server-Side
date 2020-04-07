@@ -37,7 +37,7 @@ exports.findUserById = (req, res) => {
     })
 };
 
-exports.createUser = (req, res) => {
+exports.addUser = (req, res) => {
   let username = req.body.username;
   let email = req.body.email;
   let password = req.body.password;
