@@ -1,6 +1,7 @@
 const express = require("express");
 const app = express();
 const cors = require("cors");
+const fileUpload = require('express-fileupload');
 const userRouter = require("./src/routes/user");
 const productRouter = require("./src/routes/product");
 const adminRouter = require("./src/routes/admin");
@@ -11,7 +12,9 @@ const dotenv = require("dotenv");
 dotenv.config({
   path: "./config.env"
 });
-
+app.use(fileUpload({
+  createParentPath: true
+}));
 app.use(express.json());
 app.use(cors());
 app.use("/users", userRouter);
@@ -39,6 +42,10 @@ app.listen(app.get("port"), function() {
 app.get("*", (req, res) => {
   res.send("<h1>Development ....</h1>");
 });
+
+app.post('/test', (req, res) => {
+  console.log(req.files)
+})
 
 // DB Connection
 // require('./src/database/connection');
