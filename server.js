@@ -4,6 +4,7 @@ const cors = require("cors");
 const userRouter = require("./src/routes/user");
 const productRouter = require("./src/routes/product");
 const adminRouter = require("./src/routes/admin");
+const categoryRouter = require("./src/routes/category");
 const mongoose = require("mongoose");
 // const port = process.env.PORT || 3000;
 const dotenv = require("dotenv");
@@ -16,6 +17,7 @@ app.use(cors());
 app.use("/users", userRouter);
 app.use("/products", productRouter);
 app.use("/admins", adminRouter);
+app.use("/categories", categoryRouter);
 
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*"); // update to match the domain you will make the request from
