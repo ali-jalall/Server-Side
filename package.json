@@ -11,13 +11,18 @@
   "license": "ISC",
   "dependencies": {
     "bcrypt": "^4.0.1",
+    "cloudinary": "^1.21.0",
     "cors": "^2.8.5",
+    "datauri": "^2.0.0",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "express-fileupload": "^1.1.7-alpha.2",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.9.7",
+    "multer": "^1.4.2",
+    "multer-storage-cloudinary": "^2.2.1",
     "mysql2": "^2.1.0",
+    "path": "^0.12.7",
     "pg": "^7.18.2",
     "sequelize": "^5.21.5",
     "sqlite3": "^4.1.1"

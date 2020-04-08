@@ -1,20 +1,34 @@
 const express = require("express");
-const app = express();
+const mongoose = require("mongoose");
+const dotenv = require("dotenv");
 const cors = require("cors");
-const fileUpload = require('express-fileupload');
+const cloudinary = require("cloudinary").v2;
+// const fileUpload = require("express-fileupload");
 const userRouter = require("./src/routes/user");
 const productRouter = require("./src/routes/product");
 const adminRouter = require("./src/routes/admin");
 const categoryRouter = require("./src/routes/category");
 const orderRouter = require("./src/routes/order");
-const mongoose = require("mongoose");
-const dotenv = require("dotenv");
+mongoose.Promise = global.Promise;
+
+const app = express();
+// Cloudinary configuration
 dotenv.config({
-  path: "./config.env"
+  path: "./config.env",
 });
-app.use(fileUpload({
-  createParentPath: true
-}));
+
+cloudinary.config({
+  cloud_name: process.env.CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
+
+// app.use(
+//   fileUpload({
+//     createParentPath: true,
+//   })
+// );
+
 app.use(express.json());
 app.use(cors());
 app.use("/users", userRouter);
@@ -23,7 +37,7 @@ app.use("/admins", adminRouter);
 app.use("/categories", categoryRouter);
 app.use("/orders", orderRouter);
 
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
   res.header("Access-Control-Allow-Origin", "*"); // update to match the domain you will make the request from
   res.header(
     "Access-Control-Allow-Headers",
@@ -34,47 +48,29 @@ app.use(function(req, res, next) {
 
 app.set("port", process.env.PORT || 5000);
 
-// Start node server
-app.listen(app.get("port"), function() {
+app.get("*", (_, res) => res.send("<h1>Development ....</h1>"));
+
+// DB Connection
+require("./src/database/connection");
+
+app.listen(app.get("port"), function () {
   console.log("Node server is running on port " + app.get("port"));
 });
 
-app.get("*", (req, res) => {
-  res.send("<h1>Development ....</h1>");
-});
-
-app.post('/test', (req, res) => {
-  console.log(req.files)
-})
-
-// DB Connection
-// require('./src/database/connection');
-
-// bootstrap
-// require('./src/bootstrap')();
-
-mongoose.Promise = global.Promise;
-// Mongodb connection//
-mongoose.connect(
-  process.env.MONGODB_URI ||
-    "mongodb+srv://alijalal:0000@cluster0-cbm2v.mongodb.net/test?retryWrites=true&w=majority",
-  {
-    useCreateIndex: true,
-    useNewUrlParser: true,
-    useFindAndModify: false,
-    useUnifiedTopology: true
-  },
-  err => {
-    if (err) {
-      console.log("Error while connecting .." + err);
-    } else {
-      console.log("Connected to Database");
-    }
+// console.log(multerUploads);
+var multer = require("multer");
+var storage = multer.memoryStorage();
+var upload = multer({ storage: storage });
+var stream = require("stream");
+app.post("/upload", upload.array("image"), (req, res) => {
+  var upload_stream = cloudinary.uploader.upload_stream(function (err, image) {
+    res.send(image.secure_url);
+    // console.log(image);
+  });
+  // console.log(req.files[0]);
+  for (var file of req.files) {
+    var bufferStream = new stream.PassThrough();
+    bufferStream.end(file.buffer);
+    bufferStream.pipe(upload_stream);
   }
-);
-
-// app.listen((process.env.PORT || 3000), (err, res) => {
-//   err
-//     ? console.log("Error while connecting to sevrer !", err)
-//     : console.log(`Connected to server on`);
-// });
+});
