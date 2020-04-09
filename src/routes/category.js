@@ -12,6 +12,7 @@ router.route('/add')
 
 router.route('/:id')
   .delete(category_controller.findCategoryByIdAndDelete)
+  .put(category_controller.findProductsByCategory)
   
 
 module.exports = router;

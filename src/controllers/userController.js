@@ -41,6 +41,7 @@ exports.addUser = (req, res) => {
   let username = req.body.username;
   let email = req.body.email;
   let password = req.body.password;
+  console.log(req.body)
   User.findOne({ email })
   .then(data => {
     if ( data ) {
@@ -52,7 +53,8 @@ exports.addUser = (req, res) => {
       if ( password.length < 8 ) throw new Error('Password Must be more than 8 letters')
       if ( username.length <= 6 ) throw new Error('Username Must be more than 6 letters')
       password = bcrypt.hashSync(password, 8)
-      return User.create({ username, email, password })
+      req.body.password = password
+      return User.create(req.body)
     }
   })
   .then(createdUser => {

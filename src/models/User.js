@@ -25,6 +25,14 @@ const userSchema = mongoose.Schema({
   city: {
     type: String,
     default: 'N/A'
+  },
+  age: {
+    type: Number,
+    required: [true, 'Age is Required']
+  },
+  createdAt: {
+    type: Date,
+    default: Date.now()
   }
 });
 
