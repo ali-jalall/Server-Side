@@ -60,23 +60,24 @@ const uploadToCloudinary = (file) => {
 exports.addProduct = async (req, res) => {
   let arrOfPhotos = [];
   let product_id = null;
-  for (let file of req.files) {
-    let { secure_url } = await uploadToCloudinary(file);
-    arrOfPhotos.push(secure_url);
-  }
+  try {
+    for (let file of req.files) {
+      let { secure_url } = await uploadToCloudinary(file);
+      arrOfPhotos.push(secure_url);
+    }
 
   console.log(arrOfPhotos);
   Product.create(req.body)
     .then((product) => {
       product_id = product._id
-      return Product.update(
+      return Product.updateOne(
         { _id: product._id },
         { $push: { product_imgs: { $each: arrOfPhotos } } }
       );
     })
     .then((product) => {
       if (product) {
-        return Category.update(
+        return Category.updateOne(
           { name: req.body.category },
           {
             $push: { products: product_id },
@@ -93,6 +94,9 @@ exports.addProduct = async (req, res) => {
     .catch((err) => {
       res.json({ errMsg: err.message });
     });
+  } catch (err) {
+    console.log(err)
+  }
 };
 
 exports.findProductByIdAndDelete = (req, res) => {
