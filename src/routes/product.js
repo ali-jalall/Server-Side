@@ -20,4 +20,6 @@ router.route('/p/:id')
 router.route('/:category')
   .get(product_controller.findProductsByCategory)
 
+router.route('/delete')
+  .delete(product_controller.deleteAllProducts)
 module.exports = router;

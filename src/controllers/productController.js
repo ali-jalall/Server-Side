@@ -141,4 +141,10 @@ exports.findProductsByCategory = (req, res) => {
     });
 };
 
+exports.deleteAllProducts = (req, res) => {
+  Product.remove() 
+  .then(result => res.json(result))
+  .catch(err => res.json(err))
+}
+
 // Done
