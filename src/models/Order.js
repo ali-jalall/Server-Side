@@ -10,7 +10,7 @@ const orderSchema = mongoose.Schema({
     ref: 'User',
     required: [true, 'User name is Required!']
   },
-  products_id:
+  products_ids:
   [
     {
       type: mongoose.Schema.Types.ObjectId,

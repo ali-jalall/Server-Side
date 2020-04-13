@@ -23,11 +23,6 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-// app.use(
-//   fileUpload({
-//     createParentPath: true,
-//   })
-// );
 
 app.use(express.json());
 app.use(cors());
@@ -57,20 +52,4 @@ app.listen(app.get("port"), function () {
   console.log("Node server is running on port " + app.get("port"));
 });
 
-// console.log(multerUploads);
-var multer = require("multer");
-var storage = multer.memoryStorage();
-var upload = multer({ storage: storage });
-var stream = require("stream");
-app.post("/upload", upload.array("image"), (req, res) => {
-  var upload_stream = cloudinary.uploader.upload_stream(function (err, image) {
-    res.send(image.secure_url);
-    // console.log(image);
-  });
-  // console.log(req.files[0]);
-  for (var file of req.files) {
-    var bufferStream = new stream.PassThrough();
-    bufferStream.end(file.buffer);
-    bufferStream.pipe(upload_stream);
-  }
-});
+

@@ -23,6 +23,7 @@ exports.findOrderById = (req, res) => {
 }
 
 exports.addOrder = (req, res) => {
+  console.log(req.body)
   Order.create(req.body)
     .then(order => {
       res.status(201).json({
