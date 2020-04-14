@@ -92,6 +92,7 @@ exports.findOrderByIdAndUpdate = (req, res) => {
 
 exports.removeProductFromOrder = (req, res) => {
   let _productPrice = 0;
+  let _productQuantity = req.body.quantity
   Product.findOne({ _id: req.body.id })
     .then((product) => {
       if (!product) throw new Error("Product not Exist!");
@@ -100,7 +101,7 @@ exports.removeProductFromOrder = (req, res) => {
     .then(() => {
       return Order.update(
         { _id: req.params.id },
-        { $inc: { total_price: -_productPrice } }
+        { $inc: { total_price: (-_productPrice * _productQuantity) } }
       );
     })
     .then(() => {
@@ -113,8 +114,7 @@ exports.removeProductFromOrder = (req, res) => {
       return Order.findOne({ _id: req.params.id })
     })
     .then(order => {
-      console.log(order)
-      res.status(201).json({ order });
+      res.status(200).json({ deleted: true, order_price: order.total_price })
     })
     .catch((err) => res.json(err));
 };
