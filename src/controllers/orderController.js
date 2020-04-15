@@ -87,7 +87,7 @@ exports.findUserByOrder = (req, res) => {
 exports.findOrderByIdAndUpdate = (req, res) => {
   Order.findByIdAndUpdate(req.params.id, req.body)
     .then((order) => res.json(order))
-    .catch((err) => res.josn(err));
+    .catch((err) => res.json(err));
 };
 
 exports.removeProductFromOrder = (req, res) => {
