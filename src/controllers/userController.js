@@ -63,6 +63,7 @@ exports.addUser = (req, res) => {
       auth: true,
       msg: 'User Created!',
       username: createdUser.username,
+      user_id: createdUser.id,
       token
     })
   })
