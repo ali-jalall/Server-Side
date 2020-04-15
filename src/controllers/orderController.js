@@ -26,7 +26,7 @@ exports.findOrderById = (req, res) => {
 
 exports.addOrder = (req, res) => {
   console.log(req.body)
-  User.update(
+  User.updateOne(
     { _id: req.body.user_id },
     { $push: { products_bought: { $each: req.body.products_ids } } }
   )
@@ -34,7 +34,7 @@ exports.addOrder = (req, res) => {
       return Order.create(req.body);
     })
     .then((order) => {
-      return User.update(
+      return User.updateOne(
         { _id: req.body.user_id },
         { $push: { orders: order._id } }
       );
@@ -111,13 +111,13 @@ exports.removeProductFromOrder = (req, res) => {
       _productPrice = product.price;
     })
     .then(() => {
-      return Order.update(
+      return Order.updateOne(
         { _id: req.params.id },
         { $inc: { total_price: -_productPrice * _productQuantity } }
       );
     })
     .then(() => {
-      return Order.update(
+      return Order.updateOne(
         { _id: req.params.id },
         { $pull: { products_ids: req.body.id } }
       );
