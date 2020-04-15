@@ -17,6 +17,6 @@ router.route('/:id')
   .get(order_controller.findOrderById)
   .delete(order_controller.findOrderByIdAndDelete)
   
-router.route('/edit')
+router.route('/edit/:id')
   .put(order_controller.findOrderByIdAndUpdate)
 module.exports = router;
