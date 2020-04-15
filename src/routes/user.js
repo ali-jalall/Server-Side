@@ -17,6 +17,7 @@ router.route('/login')
 
 router.route('/:id')
   .get(user_controller.findUserById)
+  .put(user_controller.findProductsAndOrdersByUser)
   .patch(user_controller.findUserByIdAndUpdate)
   .delete(user_controller.findUserByIdAndDelete)
 
