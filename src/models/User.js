@@ -3,7 +3,7 @@ const userSchema = mongoose.Schema({
   username: {
     type: String,
     required: [true, "Username is Required"],
-    trim: true
+    trim: true,
   },
   email: {
     type: String,
@@ -12,28 +12,41 @@ const userSchema = mongoose.Schema({
   },
   password: {
     type: String,
-    required: [true, "Password is Required"]
+    required: [true, "Password is Required"],
   },
   phone_number: {
     type: String,
-    default: 'N/A'
+    default: "N/A",
   },
   address: {
     type: String,
-    default: 'N/A'
+    default: "N/A",
   },
   city: {
     type: String,
-    default: 'N/A'
+    default: "N/A",
   },
   age: {
     type: Number,
-    required: [true, 'Age is Required']
+    required: [true, "Age is Required"],
   },
+  products_bought: 
+  [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Product",
+    },
+  ],
+  orders: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Order'
+    }
+  ],
   createdAt: {
     type: Date,
-    default: Date.now()
-  }
+    default: Date.now(),
+  },
 });
 
 module.exports = new mongoose.model("User", userSchema);
