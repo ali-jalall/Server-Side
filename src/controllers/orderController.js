@@ -62,33 +62,38 @@ exports.findOrderByIdAndDelete = (req, res) => {
     });
 };
 
-exports.findProductsByOrder = (req, res) => {
+// exports.findProductsByOrder = (req, res) => {
+//   Order.findOne({ _id: req.params.id })
+//     .populate("products_ids")
+//     .exec()
+//     .then((result) => {
+//       if (!result) {
+//         throw new Error("Couldn't Find Products!");
+//       } else {
+//         res.json({ products: result.products_ids });
+//       }
+//     })
+//     .catch((err) => {
+//       res.json({ errMsg: err.message });
+//     });
+// };
+
+exports.findUserAndProductsByOrder = (req, res) => {
   Order.findOne({ _id: req.params.id })
+    .populate("user_id")
     .populate("products_ids")
     .exec()
     .then((result) => {
-      if (!result) {
-        throw new Error("Couldn't Find Products!");
-      } else {
-        res.json({ products: result.products_ids });
-      }
-    })
-    .catch((err) => {
-      res.json({ errMsg: err.message });
-    });
-};
-
-exports.findUserByOrder = (req, res) => {
-  Order.findOne({ _id: req.params.id })
-    .populate("user_id")
-    .exec()
-    .then(({ user_id }) => {
-      let { email, city, address, phone_number } = user_id;
+      let { email, city, address, phone_number } = result.user_id;
+      console.log(result)
       res.json({
-        email,
-        city,
-        address,
-        phone_number,
+        products: result.products_ids,
+        user: {
+          email,
+          city,
+          address,
+          phone_number,
+        }
       });
     })
     .catch((err) => {
