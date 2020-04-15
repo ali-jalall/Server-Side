@@ -11,8 +11,7 @@ router.route('/add')
   
 
 router.route('/:id')
-  .post(order_controller.findProductsByOrder)
-  .put(order_controller.findUserByOrder)
+  .put(order_controller.findUserAndProductsByOrder)
   .patch(order_controller.removeProductFromOrder)
   .get(order_controller.findOrderById)
   .delete(order_controller.findOrderByIdAndDelete)
