@@ -33,7 +33,7 @@ exports.addCategory = (req, res) => {
 };
 
 exports.findCategoryByIdAndDelete = (req, res) => {
-  Category.findByIdAndDelete(req.params.id).then((_) => {
+  Category.findByIdAndDelete(req.params.id).then(() => {
     res.json({ deleted: true });
   });
 };
