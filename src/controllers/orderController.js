@@ -1,5 +1,6 @@
 const Order = require("../models/Order");
 const Product = require("../models/Product");
+const User = require("../models/User");
 
 exports.findAllOrders = (req, res) => {
   Order.find()
@@ -24,13 +25,24 @@ exports.findOrderById = (req, res) => {
 };
 
 exports.addOrder = (req, res) => {
-  console.log(req.body);
-  Order.create(req.body)
+  console.log(req.body)
+  User.update(
+    { _id: req.body.user_id },
+    { $push: { products_bought: { $each: req.body.products_ids } } }
+  )
+    .then(() => {
+      return Order.create(req.body);
+    })
     .then((order) => {
+      return User.update(
+        { _id: req.body.user_id },
+        { $push: { orders: order._id } }
+      );
+    })
+    .then(() => {
       res.status(201).json({
-        msg: "Order added",
-        order,
-      });
+        created: true
+      })
     })
     .catch((err) => {
       res.json({ errMsg: err.message });
@@ -42,7 +54,7 @@ exports.findOrderByIdAndDelete = (req, res) => {
     .then((order) => {
       res.status(201).json({
         deleted: true,
-        order
+        order,
       });
     })
     .catch((err) => {
@@ -92,7 +104,7 @@ exports.findOrderByIdAndUpdate = (req, res) => {
 
 exports.removeProductFromOrder = (req, res) => {
   let _productPrice = 0;
-  let _productQuantity = req.body.quantity
+  let _productQuantity = req.body.quantity;
   Product.findOne({ _id: req.body.id })
     .then((product) => {
       if (!product) throw new Error("Product not Exist!");
@@ -101,7 +113,7 @@ exports.removeProductFromOrder = (req, res) => {
     .then(() => {
       return Order.update(
         { _id: req.params.id },
-        { $inc: { total_price: (-_productPrice * _productQuantity) } }
+        { $inc: { total_price: -_productPrice * _productQuantity } }
       );
     })
     .then(() => {
@@ -111,10 +123,10 @@ exports.removeProductFromOrder = (req, res) => {
       );
     })
     .then(() => {
-      return Order.findOne({ _id: req.params.id })
+      return Order.findOne({ _id: req.params.id });
     })
-    .then(order => {
-      res.status(200).json({ deleted: true, order_price: order.total_price })
+    .then((order) => {
+      res.status(200).json({ deleted: true, order_price: order.total_price });
     })
     .catch((err) => res.json(err));
 };
