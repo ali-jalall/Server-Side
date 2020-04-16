@@ -85,7 +85,6 @@ exports.findUserAndProductsByOrder = (req, res) => {
     .exec()
     .then((result) => {
       let { email, city, address, phone_number } = result.user_id;
-      console.log(result)
       res.json({
         products: result.products_ids,
         user: {
