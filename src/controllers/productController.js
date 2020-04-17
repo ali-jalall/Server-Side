@@ -21,10 +21,10 @@ cloudinary.config({
 exports.findAllProducts = (req, res) => {
   Product.find()
     .then((result) => {
-      if (result) {
-        res.status(200).json({ result });
-      } else {
+      if (!result.length) {
         throw new Error("Couldn't find results");
+      } else {
+        res.status(200).json({ result });
       }
     })
     .catch((err) => {
@@ -65,37 +65,35 @@ exports.addProduct = async (req, res) => {
       let { secure_url } = await uploadToCloudinary(file);
       arrOfPhotos.push(secure_url);
     }
-
-  console.log(arrOfPhotos);
-  Product.create(req.body)
-    .then((product) => {
-      product_id = product._id
-      return Product.updateOne(
-        { _id: product._id },
-        { $push: { product_imgs: { $each: arrOfPhotos } } }
-      );
-    })
-    .then((product) => {
-      if (product) {
-        return Category.updateOne(
-          { name: req.body.category },
-          {
-            $push: { products: product_id },
-          }
+    Product.create(req.body)
+      .then((product) => {
+        product_id = product._id;
+        return Product.updateOne(
+          { _id: product._id },
+          { $push: { product_imgs: { $each: arrOfPhotos } } }
         );
-      }
-    })
-    .then((done) => {
-      res.status(201).json({
-        msg: "Product Added!",
-        done
+      })
+      .then((product) => {
+        if (product) {
+          return Category.updateOne(
+            { name: req.body.category },
+            {
+              $push: { products: product_id },
+            }
+          );
+        }
+      })
+      .then((done) => {
+        res.status(201).json({
+          msg: "Product Added!",
+          done,
+        });
+      })
+      .catch((err) => {
+        res.json({ errMsg: err.message });
       });
-    })
-    .catch((err) => {
-      res.json({ errMsg: err.message });
-    });
   } catch (err) {
-    console.log(err)
+    console.log(err);
   }
 };
 
@@ -109,7 +107,7 @@ exports.findProductByIdAndDelete = (req, res) => {
         }
       );
     })
-    .then((result) => {
+    .then(() => {
       res.json({ deleted: true });
     })
     .catch((err) => {
@@ -130,10 +128,10 @@ exports.findProductByIdAndUpdate = (req, res) => {
 exports.findProductsByCategory = (req, res) => {
   Product.find({ category: req.params.category })
     .then((products) => {
-      if (products.length !== 0) {
-        res.json({ products });
-      } else {
+      if (!products.length) {
         throw new Error("No Products for this category!");
+      } else {
+        res.json({ products });
       }
     })
     .catch((err) => {
@@ -142,9 +140,9 @@ exports.findProductsByCategory = (req, res) => {
 };
 
 exports.deleteAllProducts = (req, res) => {
-  Product.remove() 
-  .then(result => res.json(result))
-  .catch(err => res.json(err))
-}
+  Product.remove()
+    .then((result) => res.json(result))
+    .catch((err) => res.json(err));
+};
 
 // Done
