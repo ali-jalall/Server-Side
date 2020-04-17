@@ -21,11 +21,8 @@ cloudinary.config({
 exports.findAllProducts = (req, res) => {
   Product.find()
     .then((result) => {
-      if (!result.length) {
-        throw new Error("Couldn't find results");
-      } else {
-        res.status(200).json({ result });
-      }
+      if (!result.length) throw new Error("Couldn't find results");
+      res.status(200).json({ result });
     })
     .catch((err) => {
       res.status(204).json({ err });
@@ -128,11 +125,8 @@ exports.findProductByIdAndUpdate = (req, res) => {
 exports.findProductsByCategory = (req, res) => {
   Product.find({ category: req.params.category })
     .then((products) => {
-      if (!products.length) {
-        throw new Error("No Products for this category!");
-      } else {
-        res.json({ products });
-      }
+      if (!products.length) throw new Error("No Products for this category!");
+      res.json({ products });
     })
     .catch((err) => {
       res.status(404).json({ errMsg: err.message });

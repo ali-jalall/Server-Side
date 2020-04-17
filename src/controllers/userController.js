@@ -11,11 +11,8 @@ const config = require("../../config");
 exports.findAllUsers = (req, res) => {
   User.find()
     .then((users) => {
-      if (users) {
-        res.status(200).json({ users });
-      } else {
-        throw new Error("Couldn't find results");
-      }
+      if (!users.length) throw new Error("Couldn't find results");
+      res.status(200).json({ users });
     })
     .catch((err) => {
       res.status(204).json({ errMsg: err.message });
@@ -45,7 +42,7 @@ exports.addUser = (req, res) => {
   User.findOne({ email })
     .then((data) => {
       if (data) {
-        throw new Error('User Already Exist!')
+        throw new Error("User Already Exist!");
       } else {
         if (password.length < 8)
           throw new Error("Password Must be more than 8 letters");
@@ -126,13 +123,13 @@ exports.findUserByIdAndDelete = (req, res) => {
 exports.findProductsAndOrdersByUser = (req, res) => {
   User.findOne({ _id: req.params.id })
     .populate("products_bought")
-    .populate('orders')
+    .populate("orders")
     .exec()
     .then((user) => {
       res.json({
         user,
         products: user.products_bought,
-        orders: user.orders
+        orders: user.orders,
       });
     })
     .catch((err) => {

@@ -5,7 +5,7 @@ const User = require("../models/User");
 exports.findAllOrders = (req, res) => {
   Order.find()
     .then((orders) => {
-      if (orders.length === 0) throw new Error("No Orders Yet!");
+      if (!orders.length) throw new Error("No Orders Yet!");
       res.json({ orders });
     })
     .catch((err) => {
@@ -25,7 +25,6 @@ exports.findOrderById = (req, res) => {
 };
 
 exports.addOrder = (req, res) => {
-  console.log(req.body)
   User.updateOne(
     { _id: req.body.user_id },
     { $push: { products_bought: { $each: req.body.products_ids } } }
@@ -41,8 +40,8 @@ exports.addOrder = (req, res) => {
     })
     .then(() => {
       res.status(201).json({
-        created: true
-      })
+        created: true,
+      });
     })
     .catch((err) => {
       res.json({ errMsg: err.message });
@@ -62,22 +61,6 @@ exports.findOrderByIdAndDelete = (req, res) => {
     });
 };
 
-// exports.findProductsByOrder = (req, res) => {
-//   Order.findOne({ _id: req.params.id })
-//     .populate("products_ids")
-//     .exec()
-//     .then((result) => {
-//       if (!result) {
-//         throw new Error("Couldn't Find Products!");
-//       } else {
-//         res.json({ products: result.products_ids });
-//       }
-//     })
-//     .catch((err) => {
-//       res.json({ errMsg: err.message });
-//     });
-// };
-
 exports.findUserAndProductsByOrder = (req, res) => {
   Order.findOne({ _id: req.params.id })
     .populate("user_id")
@@ -92,7 +75,7 @@ exports.findUserAndProductsByOrder = (req, res) => {
           city,
           address,
           phone_number,
-        }
+        },
       });
     })
     .catch((err) => {

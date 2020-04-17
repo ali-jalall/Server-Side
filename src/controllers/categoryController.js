@@ -3,11 +3,8 @@ const Category = require("../models/Category");
 exports.findAllCategories = (req, res) => {
   Category.find()
     .then((categories) => {
-      if (categories) {
-        res.json({ categories });
-      } else {
-        throw new Error("No Categories!");
-      }
+      if (!categories.length) throw new Error("No Categories!");
+      res.json({ categories });
     })
     .catch((err) => {
       res.json({ errMsg: err.message });
@@ -15,7 +12,7 @@ exports.findAllCategories = (req, res) => {
 };
 
 exports.addCategory = (req, res) => {
-  console.log(req.body)
+  console.log(req.body);
   Category.findOne({ name: req.body.name })
     .then((category) => {
       if (category) throw new Error("Category already exist");
