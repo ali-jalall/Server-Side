@@ -45,10 +45,7 @@ exports.addUser = (req, res) => {
   User.findOne({ email })
     .then((data) => {
       if (data) {
-        res.status(200).json({
-          msg: "User already exist",
-          data,
-        });
+        throw new Error('User Already Exist!')
       } else {
         if (password.length < 8)
           throw new Error("Password Must be more than 8 letters");
