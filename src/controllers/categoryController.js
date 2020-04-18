@@ -43,3 +43,11 @@ exports.findProductsByCategory = (req, res) => {
       res.status(200).json({ products });
     });
 };
+
+exports.deleteAllCategories = (req, res) => {
+  Category.remove()
+    .then((result) => {
+      res.json(result)
+    })
+    .catch((err) => console.log(err));
+};

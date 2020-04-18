@@ -125,11 +125,11 @@ exports.findProductByIdAndUpdate = (req, res) => {
 exports.findProductsByCategory = (req, res) => {
   Product.find({ category: req.params.category })
     .then((products) => {
-      if (!products.length) throw new Error("No Products for this category!");
+      if (!products.length) throw new Error('No Products')
       res.json({ products });
     })
     .catch((err) => {
-      res.status(404).json({ errMsg: err.message });
+      res.json({ errMsg: err.message });
     });
 };
 

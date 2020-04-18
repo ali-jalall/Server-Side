@@ -3,12 +3,13 @@ const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 const cors = require("cors");
 const cloudinary = require("cloudinary").v2;
-// const fileUpload = require("express-fileupload");
 const userRouter = require("./src/routes/user");
 const productRouter = require("./src/routes/product");
 const adminRouter = require("./src/routes/admin");
 const categoryRouter = require("./src/routes/category");
 const orderRouter = require("./src/routes/order");
+const helmet = require("helmet");
+
 mongoose.Promise = global.Promise;
 
 const app = express();
@@ -23,16 +24,16 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-
 app.use(express.json());
 app.use(cors());
+app.use(helmet());
 app.use("/users", userRouter);
 app.use("/products", productRouter);
 app.use("/admins", adminRouter);
 app.use("/categories", categoryRouter);
 app.use("/orders", orderRouter);
 
-app.use(function (req, res, next) {
+app.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", "*"); // update to match the domain you will make the request from
   res.header(
     "Access-Control-Allow-Headers",
@@ -51,5 +52,3 @@ require("./src/database/connection");
 app.listen(app.get("port"), function () {
   console.log("Node server is running on port " + app.get("port"));
 });
-
-
