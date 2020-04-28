@@ -10,10 +10,9 @@ const categoryRouter = require("./src/routes/category");
 const orderRouter = require("./src/routes/order");
 const helmet = require("helmet");
 
-mongoose.Promise = global.Promise;
-
 const app = express();
-// Cloudinary configuration
+
+mongoose.Promise = global.Promise;
 dotenv.config({
   path: "./config.env",
 });
@@ -52,3 +51,4 @@ require("./src/database/connection");
 app.listen(app.get("port"), function () {
   console.log("Node server is running on port " + app.get("port"));
 });
+``
