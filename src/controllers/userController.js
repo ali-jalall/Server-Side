@@ -58,69 +58,58 @@ exports.addUser = async (req, res) => {
   }
 };
 
-exports.login = (req, res) => {
-  User.findOne({ email: req.body.email })
-    .then((user) => {
-      if (!user) {
-        throw new Error("Please Enter Valid Data");
-      }
-      let isPasswordValid = bcrypt.compareSync(
-        req.body.password,
-        user.password
-      );
-      if (!isPasswordValid) {
-        return res.json({ auth: false, token: null });
-      }
-      let token = jwt.sign({ id: user.id }, config.secret, {
-        expiresIn: 86400,
-      });
-      res.status(200).json({
-        auth: true,
-        token,
-        username: user.username,
-        user_id: user._id,
-      });
-      res.end();
-    })
-    .catch((err) => {
-      res.json({ err: err.message });
+exports.login = async (req, res) => {
+  try {
+    let email = req.body.email;
+    let user = await User.findOne({ email });
+    if (!user) throw new Error("Please Enter Valid Data");
+    let isPasswordValid = bcrypt.compareSync(req.body.password, user.password);
+    if (!isPasswordValid) return res.json({ auth: false, token: null });
+    let token = jwt.sign({ id: user.id }, config.secret, {
+      expiresIn: 86400,
     });
+    res.status(200).json({
+      auth: true,
+      token,
+      username: user.username,
+      user_id: user._id,
+    });
+  } catch (err) {
+    res.json({ err: err.message });
+  }
 };
 
-exports.findUserByIdAndUpdate = (req, res) => {
-  User.findByIdAndUpdate(req.params.id, req.body)
-    .then((userupdated) => {
-      res.status(201).json({ userupdated });
-    })
-    .catch((err) => {
-      res.json({ err: err.message });
-    });
+exports.findUserByIdAndUpdate = s = async (req, res) => {
+  try {
+    const userupdated = await User.findByIdAndUpdate(req.params.id, req.body);
+    res.status(201).json({ userupdated });
+  } catch (err) {
+    res.json({ err: err.message });
+  }
 };
 
-exports.findUserByIdAndDelete = (req, res) => {
-  User.findByIdAndDelete(req.params.id)
-    .then((user) => {
-      if (!user) throw new Error("No User With this id!");
-      res.status(201).json({ deleted: true });
-    })
-    .catch((err) => {
-      res.json({ errMsg: err.message });
-    });
+exports.findUserByIdAndDelete = async (req, res) => {
+  try {
+    let user = await User.findByIdAndDelete(req.params.id);
+    if (!user) throw new Error("No User With this id!");
+    res.status(201).json({ deleted: true });
+  } catch (err) {
+    res.json({ errMsg: err.message });
+  }
 };
 
-exports.findProductsAndOrdersByUser = (req, res) => {
-  User.findOne({ _id: req.params.id })
-    .populate("products_bought")
-    .populate("orders")
-    .exec()
-    .then((user) => {
-      res.json({
-        user,
-        products: user.products_bought,
-        orders: user.orders,
-      });
-    })
-    .catch((err) => {
-      res.json({ errMsg: err.message });
+exports.findProductsAndOrdersByUser = async (req, res) => {
+  try {
+    let user = await User.findOne({ _id: req.params.id })
+      .populate("products_bought")
+      .populate("orders")
+      .exec();
+    res.json({
+      user,
+      products: user.products_bought,
+      orders: user.orders,
     });
+  } catch (err) {
+    res.json({ errMsg: err.message });
+  }
 };
