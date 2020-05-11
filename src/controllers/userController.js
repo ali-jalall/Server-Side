@@ -8,66 +8,54 @@ const config = require("../../config");
  * @returns <Promise> All methods beolw returns a promise to be handled
  */
 
-exports.findAllUsers = (req, res) => {
-  User.find()
-    .then((users) => {
-      if (!users.length) throw new Error("Couldn't find results");
-      res.status(200).json({ users });
-    })
-    .catch((err) => {
-      res.status(204).json({ errMsg: err.message });
-    });
+exports.findAllUsers = async (req, res) => {
+  try {
+    const users = await User.find();
+    if (!users.length) throw new Error("Couldn't find results");
+    res.status(200).json({ users });
+  } catch (err) {
+    res.status(204).json({ errMsg: err.message });
+  }
 };
 
-exports.findUserById = (req, res) => {
-  const id = req.params.id;
-  User.findOne({ _id: id })
-    .then((user) => {
-      if (user) {
-        res.status(200).json({ user });
-      } else {
-        throw new Error("Couldn't find results");
-      }
-    })
-    .catch((err) => {
-      res.json({ errMsg: err.message });
-    });
+exports.findUserById = async (req, res) => {
+  try {
+    const _id = req.params.id;
+    const user = await User.findOne({ _id });
+    if (user) res.status(200).json({ user });
+    throw new Error("Couldn't find results");
+  } catch (err) {
+    res.json({ errMsg: err.message });
+  }
 };
 
-exports.addUser = (req, res) => {
-  let username = req.body.username;
-  let email = req.body.email;
-  let password = req.body.password;
-  console.log(req.body);
-  User.findOne({ email })
-    .then((data) => {
-      if (data) {
-        throw new Error("User Already Exist!");
-      } else {
-        if (password.length < 8)
-          throw new Error("Password Must be more than 8 letters");
-        if (username.length <= 6)
-          throw new Error("Username Must be more than 6 letters");
-        password = bcrypt.hashSync(password, 8);
-        req.body.password = password;
-        return User.create(req.body);
-      }
-    })
-    .then((createdUser) => {
-      const token = jwt.sign({ id: createdUser.id }, config.secret, {
-        expiresIn: 86400,
-      });
-      res.status(201).json({
-        auth: true,
-        msg: "User Created!",
-        username: createdUser.username,
-        user_id: createdUser.id,
-        token,
-      });
-    })
-    .catch((err) => {
-      res.json({ errMsg: err.message });
+exports.addUser = async (req, res) => {
+  try {
+    let username = req.body.username;
+    let email = req.body.email;
+    let password = req.body.password;
+    let user = await User.findOne({ email });
+    if (user) throw new Error("User Already Exist!");
+    if (password.length < 8)
+      throw new Error("Password Must be more than 8 letters");
+    if (username.length <= 6)
+      throw new Error("Username Must be more than 6 letters");
+    password = bcrypt.hashSync(password, 8);
+    req.body.password = password;
+    let newUser = await User.create(req.body);
+    const token = jwt.sign({ id: newUser.id }, config.secret, {
+      expiresIn: 86400,
     });
+    res.status(201).json({
+      auth: true,
+      msg: "User Created!",
+      username: newUser.username,
+      user_id: newUser.id,
+      token,
+    });
+  } catch (err) {
+    res.json({ errMsg: err.message });
+  }
 };
 
 exports.login = (req, res) => {
