@@ -1,17 +1,6 @@
 const Product = require("../models/Product");
 const Category = require("../models/Category");
-const cloudinary = require("cloudinary").v2;
-const multer = require("multer");
-const storage = multer.memoryStorage();
-const upload = multer({ storage: storage });
-
-const stream = require("stream");
-
-cloudinary.config({
-  cloud_name: process.env.CLOUD_NAME,
-  api_key: process.env.CLOUDINARY_API_KEY,
-  api_secret: process.env.CLOUDINARY_API_SECRET,
-});
+const uploadToCloudinary = require('../uploads/index').uploadToCloudinary
 
 /**
  * @functions Helper Functions for crud operations on this model
@@ -43,16 +32,7 @@ exports.findProductById = (req, res) => {
     });
 };
 
-const uploadToCloudinary = (file) => {
-  return new Promise((resolve, reject) => {
-    let upload_stream = cloudinary.uploader.upload_stream((err, image) => {
-      err ? reject(err) : resolve(image);
-    });
-    let bufferStream = new stream.PassThrough();
-    bufferStream.end(file.buffer);
-    bufferStream.pipe(upload_stream);
-  });
-};
+
 
 exports.addProduct = async (req, res) => {
   let arrOfPhotos = [];
