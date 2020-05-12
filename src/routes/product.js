@@ -3,7 +3,6 @@ const router = express.Router();
 const multer = require("multer");
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
-
 const product_controller = require('../controllers/productController');
 
 router.route('/')
@@ -20,6 +19,5 @@ router.route('/p/:id')
 router.route('/:category')
   .get(product_controller.findProductsByCategory)
 
-router.route('/delete')
-  .delete(product_controller.deleteAllProducts)
+
 module.exports = router;
