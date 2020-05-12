@@ -12,5 +12,5 @@ router
   .delete(category_controller.findCategoryByIdAndDelete)
   .put(category_controller.findProductsByCategory);
 
-router.route("/delete").delete(category_controller.deleteAllCategories);
+// router.route("/delete").delete(category_controller.deleteAllCategories);
 module.exports = router;
